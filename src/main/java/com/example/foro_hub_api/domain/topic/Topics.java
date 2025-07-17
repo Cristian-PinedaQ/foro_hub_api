@@ -13,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "topicos")
+@Table(name = "topics")
 public class Topics {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,4 +32,6 @@ public class Topics {
     @NotNull
     private String curso;
 
+    public Topics(Topics topics) {
+    }
 }
