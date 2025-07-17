@@ -1,5 +1,6 @@
 package com.example.foro_hub_api.Infra.exceptions;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -17,23 +18,11 @@ import java.util.Map;
 @RestControllerAdvice
 public class ErrorManager {
 
-    /*@ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity error400Manager(MethodArgumentNotValidException ex){
-        var errors = ex.getFieldErrors();
-        return ResponseEntity.badRequest().body(errors.stream().map(ValidatedErrorData::new).toList());
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity gestionarError400() {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado por id");
     }
 
-    public  record  ValidatedErrorData(String field, String msn){
-    public ValidatedErrorData(FieldError error){
-        this(error.getField(), error.getDefaultMessage());
-    }
-    }
-
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity gestionarErrorBadCredentials() {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
-    }
-    */
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity gestionarErrorAuthentication() {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Falla en la autenticación");
@@ -43,13 +32,6 @@ public class ErrorManager {
     public ResponseEntity gestionarErrorAccesoDenegado() {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Acceso denegado");
     }
-
-
-    /*
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity gestionarError500(Exception ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " +ex.getLocalizedMessage());
-    }*/
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleNotFound(ResourceNotFoundException ex) {
